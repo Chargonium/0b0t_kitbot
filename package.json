@@ -1,0 +1,15 @@
+{
+    "name": "0b0t_kitbot",
+    "version": "0.0.1",
+    "main": "index.js",
+    "scripts": {
+        "test": "."
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Chargonium/0b0t_kitbot.git"
+    },
+    "author": "Chargonium",
+    "license": "ISC",
+    "description": ""
+}
