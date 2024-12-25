@@ -11,3 +11,5 @@ fetch(process.env.WEBHOOK_URL, {
 }).then((response) => {
     console.log(response.status);
 });
+
+console.log("DONE");
