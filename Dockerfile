@@ -1,4 +1,4 @@
-FROM node:12
+FROM node:20
 
 WORKDIR /0b0t_kitbot
 
@@ -8,4 +8,4 @@ RUN npm install
 
 COPY . .
 
-CMD ["node" "."]
+CMD ["node", "--env-file=.env", "index.js"]
