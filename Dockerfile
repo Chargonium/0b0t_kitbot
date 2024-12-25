@@ -5,6 +5,7 @@ WORKDIR /0b0t_kitbot
 COPY package*.json ./
 
 RUN npm install
+ADD .env
 
 COPY . .
 
