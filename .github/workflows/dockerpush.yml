@@ -62,4 +62,4 @@ jobs:
             - name: Deploy to server
               id: Deploy
               run: |
-                  ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_ADDRESS }} 'docker pull chargonium/kitbot && docker-compose up -d'
+                  ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_ADDRESS }} 'docker pull chargonium/kitbot:main && docker-compose up -d'
