@@ -48,11 +48,18 @@ jobs:
                   push: true
                   tags: ${{ steps.meta.outputs.tags }}
                   labels: ${{ steps.meta.outputs.labels }}
+
     deploy_to_vps:
         name: Deploy to server
         runs-on: ubuntu-latest
+        needs: "push_to_registry"
         steps:
+            - name: Set up SSH agent
+              uses: webfactory/ssh-agent@v0.5.3
+              with:
+                  ssh-private-key: ${{ secrets.SSH_KEY }}
+
             - name: Deploy to server
               id: Deploy
               run: |
-                  ssh -i ${{ secrets.SSH_KEY }} ${{ secrets.SERVER_ADDRESS }} 'docker pull chargonium/kitbot && docker-compose up -d'
+                  ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_ADDRESS }} 'docker pull chargonium/kitbot && docker-compose up -d'
