@@ -48,3 +48,11 @@ jobs:
                   push: true
                   tags: ${{ steps.meta.outputs.tags }}
                   labels: ${{ steps.meta.outputs.labels }}
+    deploy_to_vps:
+        name: Deploy to server
+        runs-on: ubuntu-latest
+        steps:
+            - name: Deploy to server
+              id: Deploy
+              run: |
+                  ssh -i ${{ secrets.SSH_KEY }} ${{ secrets.SERVER_ADDRESS }} 'docker pull chargonium/kitbot && docker-compose up -d'

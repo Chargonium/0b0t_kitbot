@@ -6,7 +6,7 @@ fetch(process.env.WEBHOOK_URL, {
         "Content-Type": "application/json",
     },
     body: JSON.stringify({
-        content: "This is an test message!",
+        content: "This test message was automatically deployed to the vps!!!",
     }),
 }).then((response) => {
     console.log(response.status);
