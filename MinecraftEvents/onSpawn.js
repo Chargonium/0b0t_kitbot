@@ -1,11 +1,15 @@
-let { botObject } = require("../index")
+let { botObject, log, sendChat, waitForNonNullBot } = require("../index")
 
 module.exports = {
     name: "spawn",
     once: true,
     execute() {
-        botObject.bot.setControlState('jump', true)
-        botObject.bot.waitForTicks(10)
-        botObject.bot.setControlState('jump', false)
+        log("Debug", "omg it actually fucking ran")
+        waitForNonNullBot().then((bot) => {
+            bot.setControlState('jump', true)
+            setTimeout(() => {
+                bot.setControlState('jump', false)
+            }, 500)
+        })
     }
 }

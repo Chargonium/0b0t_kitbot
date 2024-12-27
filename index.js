@@ -20,6 +20,52 @@ const Admins = [
 
 const Blacklisted = []
 
+function waitForNonNullChat(interval = 100) {
+    return new Promise((resolve) => {
+      const checkVariable = () => {
+        if (botObject.bot.chat != null) {
+          resolve(null);
+        } else {
+          setTimeout(checkVariable, interval);
+        }
+      };
+  
+      checkVariable();
+    });
+}
+
+function waitForNonNullClientChat(interval = 100) {
+    return new Promise((resolve) => {
+      const checkVariable = () => {
+        if (botObject.bot._client.chat != null) {
+          resolve(null);
+        } else {
+          setTimeout(checkVariable, interval);
+        }
+      };
+  
+      checkVariable();
+    });
+}
+
+function waitForNonNullBot(interval = 100) {
+    return new Promise((resolve) => {
+      const checkVariable = () => {
+        if (botObject.bot != null) {
+            waitForNonNullChat(1).then(() => {
+                waitForNonNullClientChat(1).then(() => {
+                    resolve(botObject.bot)
+                })
+            })
+        } else {
+          setTimeout(checkVariable, interval);
+        }
+      };
+  
+      checkVariable();
+    });
+}
+
 function processEnv() {
     return new Promise((resolve) => {
         const dotenv = require('dotenv')
@@ -72,11 +118,12 @@ function CreateBot() {
     log("Information", "Creating the minecraft bot!")
     let serverHost = process.env.IP.split(":")
     botObject.bot = Mineflayer.createBot({
-        host: "0b0t.org",
+        host: serverHost[0],
+        port: serverHost[1],
         username: process.env.MC_EMAIL,
         password: process.env.MC_PASSWORD,
         auth: 'microsoft',
-        version: '1.12.2'
+        version: '1.12.2' // Even though 0b0t is 1.20.4 as of right now; For whatever reason if i try using 1.20.4 for the bot breaks ):
     })
     
 }
@@ -134,12 +181,8 @@ async function registerCommands() {
 }
 
 async function InitBot() {
-    var test = getUuid("Chargonium")
     await processEnv()
     await InitDiscordBot()
-
-    await test
-    console.log(test)
 
     CreateBot()
     log("Information", "Loading the bot plugins!")
@@ -154,7 +197,7 @@ async function Main() {
     InitBot()
 }
 
-function log(type = "debug",  message = "UNDEFINED", color = "#2e2e2e") {
+function log(type = "Debug",  message = "UNDEFINED", color = "#2e2e2e") {
     const embed = new EmbedBuilder()
         .setTitle(type)
         .setColor(color)
@@ -177,5 +220,6 @@ module.exports = {
     commandEmitter,
     botObject,
     Admins, Blacklisted,
-    registerCommands
+    registerCommands,
+    waitForNonNullBot
 }
